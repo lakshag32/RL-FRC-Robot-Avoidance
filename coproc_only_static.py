@@ -78,9 +78,7 @@ class OnlyStaticEnv(gym.Env):
         self.prev_angle = 0; 
 
     def step(self, angle):
-        print(self.robot)
-        print(self.target)
-
+ 
         new_angle = np.float32(np.interp(angle,[-1,1],[-180,180]))
         terminated = False
         truncated = False
