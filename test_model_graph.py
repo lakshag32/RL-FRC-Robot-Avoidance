@@ -6,7 +6,7 @@ from coproc_only_static import OnlyStaticEnv
 import numpy as np
 import math
 
-env = OnlyStaticEnv([100,100],[200,100])
+env = OnlyStaticEnv([100,100],[500,100])
 obs,info = env.reset()
 
 terminated = False
@@ -52,15 +52,10 @@ def animate(i, ys):
         
     resized_action = -np.float32(np.interp(action,[-1,1],[-180,180]))[0]
 
-    print(resized_action)
+    obs,reward,terminated,truncated,info = env.step(action)
+    
+    env.render()
 
-    # obs,reward,terminated,truncated,info = env.step(action)
-
-    # env.render()
-
-    # print(env.num_steps)
-
-    # Read temperature (Celsius) from TMP102
     temp_c = resized_action
 
     # Add y to list

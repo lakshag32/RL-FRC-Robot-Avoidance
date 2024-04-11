@@ -29,6 +29,6 @@ while True:
 
 	print(resized_action)
 
-	# obs,reward,terminated,truncated,info = env.step(action)
+	obs,reward,terminated,truncated,info = env.step(action)
 
-	# env.render()
+	env.render()
