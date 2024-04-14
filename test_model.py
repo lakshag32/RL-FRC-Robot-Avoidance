@@ -1,5 +1,5 @@
 from stable_baselines3 import SAC
-from env import OnlyStaticEnv
+from coproc_only_static import OnlyStaticEnv
 import numpy as np
 import math
 
@@ -9,7 +9,9 @@ obs,info = env.reset()
 terminated = False
 truncated = False
 
-episodes = 10000# num_target_touches = 0
+episodes = 10000
+
+# num_target_touches = 0
 # num_obstacle_touches = 0
 #model loading code: https://pythonprogramming.net/saving-and-loading-reinforcement-learning-stable-baselines-3-tutorial/
 model_path = "(best)65_-25_-10.zip"
@@ -27,6 +29,6 @@ while True:
 
 	print(resized_action)
 
-	obs,reward,terminated,truncated,info = env.step(0.25)
+	# obs,reward,terminated,truncated,info = env.step(action)
 
-	env.render()
+	# env.render()

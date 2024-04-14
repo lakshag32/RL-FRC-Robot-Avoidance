@@ -1,12 +1,12 @@
 #angle plotting code: https://www.digikey.com/en/maker/projects/graph-sensor-data-with-python-and-matplotlib/93f919fd4e134c48bc5cd2bc0e5a5ba2#:~:text=To%20create%20a%20real%2Dtime,new%20frame%20in%20the%20animation.
 
-import cv2
+#import cv2
 import numpy as np 
 import random
 import math
 
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+#import matplotlib.pyplot as plt
+#import matplotlib.animation as animation
 
 FIELD_WIDTH = 600
 FIELD_HEIGHT = 300
@@ -15,42 +15,42 @@ MOVE_AMOUNT = 12
 DANGER_ZONE = int(math.hypot(ROBOT_SIZE,ROBOT_SIZE))+10
 
 # Parameters
-x_len = 200         # Number of points to display
-y_range = [-200, 200]  # Range of possible Y values to display
+#x_len = 200         # Number of points to display
+#y_range = [-200, 200]  # Range of possible Y values to display
 
 # Create figure for plotting
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-xs = list(range(0, 200))
-ys = [0] * x_len
-ax.set_ylim(y_range)
+#fig = plt.figure()
+#ax = fig.add_subplot(1, 1, 1)
+#xs = list(range(0, 200))
+#ys = [0] * x_len
+#ax.set_ylim(y_range)
 
 # Create a blank line. We will update the line in animate
-line, = ax.plot(xs, ys)
+#line, = ax.plot(xs, ys)
 
 # Add labels
-plt.title('TMP102 Temperature over Time')
-plt.xlabel('Samples')
-plt.ylabel('Temperature (deg C)')
+#plt.title('TMP102 Temperature over Time')
+#plt.xlabel('Samples')
+#plt.ylabel('Temperature (deg C)')
 
-angle = 0
+#angle = 0
 
 # This function is called periodically from FuncAnimation
-def animate(i, ys):
+#def animate(i, ys):
 
     # Read temperature (Celsius) from TMP102
-    temp_c = get_resized_angle()
+#    temp_c = get_resized_angle()
 
     # Add y to list
-    ys.append(temp_c)
+#    ys.append(temp_c)
 
     # Limit y list to set number of items
-    ys = ys[-x_len:]
+#    ys = ys[-x_len:]
 
     # Update line with new Y values
-    line.set_ydata(ys)
+#    line.set_ydata(ys)
 
-    return line,
+#    return line,
 
 def get_resized_angle():
     return angle 
@@ -96,13 +96,14 @@ def rotate_robot_pts_for_drawing(robot_pts,angle):
 def draw_robot(screen,robot_pts): 
     #https://docs.opencv.org/3.4/d4/d73/tutorial_py_contours_begin.html
     robot_pts = robot_pts.reshape((-1,1,2))
-    cv2.polylines(screen,[robot_pts],True,(0,0,255)) 
+    #cv2.polylines(screen,[robot_pts],True,(0,0,255)) 
 
     #https://www.geeksforgeeks.org/draw-a-filled-polygon-using-the-opencv-function-fillpoly/
-    cv2.fillPoly(screen, pts=[robot_pts], color=(0, 0, 255))
+    #cv2.fillPoly(screen, pts=[robot_pts], color=(0, 0, 255))
 
 def draw_target(screen,target): 
-    cv2.circle(screen,target,10,(0,255,0),-1)
+    #cv2.circle(screen,target,10,(0,255,0),-1)
+    pass
 
 def move(center,angle): 
     angle_rad = np.deg2rad(angle)

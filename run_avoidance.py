@@ -1,6 +1,6 @@
 #angle graphing code from: https://github.com/WaveShapePlay/Arduino_RealTimePlot/blob/master/Part2_RealTimePlot_UsingClass/ArduinoRealTimePlot.py
 from stable_baselines3 import SAC
-from env import OnlyStaticEnv
+from coproc_only_static import OnlyStaticEnv
 import ntables
 import numpy as np
 import math
