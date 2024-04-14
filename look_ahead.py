@@ -17,7 +17,7 @@ episodes = 10000
 model_path = "(best)65_-25_-10.zip"
 model = SAC.load(model_path, env=env)
 action_sum = 0
-num_look_ahead_steps = 8
+num_look_ahead_steps = 15 #30
 action_cntr = 1
 robot_coord = env.robot
 
@@ -36,7 +36,7 @@ while True:
         obs,_reward,_term,_trunc,_info = env.step(avg_action)    
         env.render()
 
-        if math.dist(env.robot,env.target) < 20: 
+        if math.dist(env.robot,env.target) < 30: 
             print("helo")
             break
             

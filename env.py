@@ -457,10 +457,9 @@ class OnlyStaticEnv(gym.Env):
 
         return observation,info
 
-
     def render(self):
         cv2.imshow("env",self.screen)
-        cv2.waitKey(200)
+        cv2.waitKey(1000)
         pass
 
     def close(self):
