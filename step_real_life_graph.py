@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import random 
 from stable_baselines3 import SAC
-from coproc_only_static import OnlyStaticEnv
+from env import OnlyStaticEnv
 import numpy as np
 import math
 import ntables
