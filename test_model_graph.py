@@ -6,20 +6,25 @@ from coproc_only_static import OnlyStaticEnv
 import numpy as np
 import math
 
-env = OnlyStaticEnv([100,100],[500,100])
+env = OnlyStaticEnv([100,100],[800,500])
+robot_coord = env.robot
+
 obs,info = env.reset()
 
 terminated = False
 truncated = False
 
 episodes = 10000
+action_sum = 0 
+action_cntr = 0
+num_look_ahead_steps = 1
+avg_action = 0 
 
 # num_target_touches = 0
 # num_obstacle_touches = 0
 #model loading code: https://pythonprogramming.net/saving-and-loading-reinforcement-learning-stable-baselines-3-tutorial/
 model_path = "(best)65_-25_-10.zip"
 model = SAC.load(model_path, env=env)
-
 
 # Parameters
 x_len = 50       # Number of points to display
@@ -42,21 +47,39 @@ plt.ylabel('Temperature (deg C)')
 
 # This function is called periodically from FuncAnimation
 def animate(i, ys):
-    if math.dist(env.robot,env.target) < 20: 
-        print("helo")
-        return
-
     global obs
-
-    action, _states = model.predict(obs)
-        
-    resized_action = -np.float32(np.interp(action,[-1,1],[-180,180]))[0]
-
-    obs,reward,terminated,truncated,info = env.step(action)
+    global action_cntr
+    global action_sum
+    global avg_action
+    global robot_coord
     
-    env.render()
+    action, _states = model.predict(obs)
+    action_cntr +=1
+    action_sum +=action
 
-    temp_c = resized_action
+    obs,_reward,_terminated,_truncated,_info = env.look_ahead_step(action)
+
+    if action_cntr == num_look_ahead_steps:
+        env.robot = robot_coord
+        avg_action = action_sum/num_look_ahead_steps
+        obs,_reward,_term,_trunc,_info = env.step(avg_action)    
+        env.render()
+
+        if math.dist(env.robot,env.target) < 20: 
+            print("helo")
+            return
+            
+        robot_coord = env.robot
+        action_cntr = 0
+
+        resized_avg_action = -np.float32(np.interp(avg_action,[-1,1],[-180,180]))
+        print(resized_avg_action)
+
+
+    # resized_avg_action = -np.float32(np.interp(avg_action,[-1,1],[-180,180]))
+    # print(resized_avg_action)
+
+    temp_c = 0
 
     # Add y to list
     ys.append(temp_c)

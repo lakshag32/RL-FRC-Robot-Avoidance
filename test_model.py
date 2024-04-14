@@ -3,7 +3,7 @@ from coproc_only_static import OnlyStaticEnv
 import numpy as np
 import math
 
-env = OnlyStaticEnv([100,100],[200,100])
+env = OnlyStaticEnv([100,100],[500,200])
 obs,info = env.reset()
 
 terminated = False
@@ -16,19 +16,32 @@ episodes = 10000
 #model loading code: https://pythonprogramming.net/saving-and-loading-reinforcement-learning-stable-baselines-3-tutorial/
 model_path = "(best)65_-25_-10.zip"
 model = SAC.load(model_path, env=env)
+action_sum = 0
+num_look_ahead_steps = 8
+action_cntr = 1
+robot_coord = env.robot
 
 #training loop code from: https://pythonprogramming.net/introduction-reinforcement-learning-stable-baselines-3-tutorial/
 while True:
 
-	if math.dist(env.robot,env.target) <= 30: 
-		break 
+    action, _states = model.predict(obs)
+    action_cntr +=1
+    action_sum +=action
 
-	action, _states = model.predict(obs)
-    
-	resized_action = -np.float32(np.interp(action,[-1,1],[-180,180]))[0]
+    obs,_reward,_terminated,_truncated,_info = env.look_ahead_step(action)
 
-	print(resized_action)
+    if action_cntr == num_look_ahead_steps:
+        env.robot = robot_coord
+        avg_action = action_sum/num_look_ahead_steps
+        obs,_reward,_term,_trunc,_info = env.step(avg_action)    
+        env.render()
 
-	obs,reward,terminated,truncated,info = env.step(action)
+        if math.dist(env.robot,env.target) < 20: 
+            print("helo")
+            break
+            
+        robot_coord = env.robot
+        action_cntr = 0
 
-	env.render()
+        resized_avg_action = -np.float32(np.interp(avg_action,[-1,1],[-180,180]))
+        print(resized_avg_action)
